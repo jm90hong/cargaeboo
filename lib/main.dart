@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         title: '카계부',
         theme: ThemeData(
           fontFamily: 'nt',
-          primarySwatch: MyColor.main,
+          primarySwatch: MyColor.mainMaterialColor,
         ),
         home: RootScreen(),
       ),

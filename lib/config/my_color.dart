@@ -2,10 +2,17 @@
 import 'package:flutter/material.dart';
 
 class MyColor{
-  static MaterialColor main = createMaterialColor(const Color(0xff000000));
-  static MaterialColor dark =  createMaterialColor(const Color(0xff000000));
 
 
+  static const mainCode = 0xff2343ed;
+  static const darkCode = 0xff1f1f26;
+
+
+
+  static Color mainColor = const Color(mainCode);
+  static Color darkColor = const Color(darkCode);
+  static MaterialColor mainMaterialColor = createMaterialColor(const Color(mainCode));
+  static MaterialColor darkMaterialColor =  createMaterialColor(const Color(darkCode));
 }
 
 

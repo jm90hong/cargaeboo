@@ -1,6 +1,11 @@
 
 import 'package:cargaeboo/config/my_color.dart';
+import 'package:cargaeboo/screen/app_info_screen.dart';
+import 'package:cargaeboo/screen/car_screen.dart';
+import 'package:cargaeboo/screen/parts_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../config/my_widget.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -11,6 +16,11 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   int _selectedIndex=0;
+  List<Widget> screens = [
+    CarScreen(),
+    PartsScreen(),
+    AppInfoScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +28,22 @@ class _RootScreenState extends State<RootScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor:Colors.white,
         title: Row(
           children: [
             Image.asset('assets/img/logo.png',height: 40,fit: BoxFit.cover,)
           ],
         ),
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          children: [
-
-          ],
-        ),
+      body: FullContainer(
+        child: screens[_selectedIndex]
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: MyColor.mainColor,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Color(0xffEAEAEA),
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        iconSize: 23,
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -51,8 +60,6 @@ class _RootScreenState extends State<RootScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: MyColor.main,
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         onTap: (index){
           setState(() {
             _selectedIndex=index;

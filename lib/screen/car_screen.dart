@@ -1,6 +1,8 @@
 import 'package:cargaeboo/screen/add_car_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../config/my_color.dart';
+import '../config/my_widget.dart';
 import '../entity/car.dart';
 
 
@@ -15,9 +17,7 @@ class _CarScreenState extends State<CarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
+      body: FullContainer(
         child: Column(
           children: [
 
@@ -25,12 +25,13 @@ class _CarScreenState extends State<CarScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: MyColor.mainColor,
         onPressed: (){
           Navigator.push(
             context, MaterialPageRoute(builder: (context) => AddCarScreen()),
           );
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: Colors.white,),
       ),
     );
   }

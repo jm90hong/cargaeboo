@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../config/my_color.dart';
+import '../config/my_widget.dart';
+
 
 class AppInfoScreen extends StatefulWidget {
   const AppInfoScreen({super.key});
@@ -12,9 +15,8 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
+      body: FullContainer(
+
         child: Column(
           children: [
 
