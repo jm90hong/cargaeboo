@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 
 import 'model/parts_model.dart';
 
-void main() async{
-  await MyFloor.init();
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MyFloor.init();
   runApp(const MyApp());
 }
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         title: '카계부',
         theme: ThemeData(
           fontFamily: 'nt',
-          primarySwatch: MyColor.mainColor,
+          primarySwatch: MyColor.main,
         ),
         home: RootScreen(),
       ),

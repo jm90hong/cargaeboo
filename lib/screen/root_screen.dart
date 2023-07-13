@@ -19,7 +19,11 @@ class _RootScreenState extends State<RootScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: Row(),
+        title: Row(
+          children: [
+            Image.asset('assets/img/logo.png',height: 40,fit: BoxFit.cover,)
+          ],
+        ),
       ),
       body: Container(
         width: double.infinity,
@@ -47,7 +51,8 @@ class _RootScreenState extends State<RootScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: MyColor.mainColor,
+        selectedItemColor: MyColor.main,
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         onTap: (index){
           setState(() {
             _selectedIndex=index;

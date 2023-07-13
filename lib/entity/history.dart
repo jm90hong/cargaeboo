@@ -7,14 +7,14 @@ class History{
   late final int? idx;
   final int carIdx;
   final int partsIdx;
-  final int km;
+  final int distance;
   final String date;
 
   History({
     this.idx,
     required this.carIdx,
     required this.partsIdx,
-    required this.km,
+    required this.distance,
     required this.date
   });
 }
