@@ -1,12 +1,14 @@
 import 'package:cargaeboo/config/my_color.dart';
 import 'package:cargaeboo/model/car_model.dart';
 import 'package:cargaeboo/screen/root_screen.dart';
+import 'package:cargaeboo/util/my_floor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'model/parts_model.dart';
 
-void main() {
+void main() async{
+  await MyFloor.init();
   runApp(const MyApp());
 }
 

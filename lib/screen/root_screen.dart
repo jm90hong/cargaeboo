@@ -26,7 +26,7 @@ class _RootScreenState extends State<RootScreen> {
         height: double.infinity,
         child: Column(
           children: [
-            
+
           ],
         ),
       ),
