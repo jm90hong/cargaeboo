@@ -7,7 +7,7 @@ class History{
   late final int? idx;
   final int carIdx;
   final int partsIdx;
-  final int distance;
+  final String distance;
   final String date;
 
   History({

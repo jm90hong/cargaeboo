@@ -93,7 +93,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Parts` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `durationDistance` TEXT NOT NULL, `durationPeriod` TEXT NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `History` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `carIdx` INTEGER NOT NULL, `partsIdx` INTEGER NOT NULL, `distance` INTEGER NOT NULL, `date` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `History` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `carIdx` INTEGER NOT NULL, `partsIdx` INTEGER NOT NULL, `distance` TEXT NOT NULL, `date` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -253,9 +253,88 @@ class _$HistoryDao extends HistoryDao {
   _$HistoryDao(
     this.database,
     this.changeListener,
-  );
+  )   : _queryAdapter = QueryAdapter(database),
+        _historyInsertionAdapter = InsertionAdapter(
+            database,
+            'History',
+            (History item) => <String, Object?>{
+                  'idx': item.idx,
+                  'carIdx': item.carIdx,
+                  'partsIdx': item.partsIdx,
+                  'distance': item.distance,
+                  'date': item.date
+                }),
+        _historyUpdateAdapter = UpdateAdapter(
+            database,
+            'History',
+            ['idx'],
+            (History item) => <String, Object?>{
+                  'idx': item.idx,
+                  'carIdx': item.carIdx,
+                  'partsIdx': item.partsIdx,
+                  'distance': item.distance,
+                  'date': item.date
+                });
 
   final sqflite.DatabaseExecutor database;
 
   final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<History> _historyInsertionAdapter;
+
+  final UpdateAdapter<History> _historyUpdateAdapter;
+
+  @override
+  Future<List<History>> findAllHistory() async {
+    return _queryAdapter.queryList('SELECT * FROM History ORDER BY idx DESC',
+        mapper: (Map<String, Object?> row) => History(
+            idx: row['idx'] as int?,
+            carIdx: row['carIdx'] as int,
+            partsIdx: row['partsIdx'] as int,
+            distance: row['distance'] as String,
+            date: row['date'] as String));
+  }
+
+  @override
+  Future<void> deleteHistoryByIdx(int idx) async {
+    await _queryAdapter
+        .queryNoReturn('DELETE FROM History WHERE idx = ?1', arguments: [idx]);
+  }
+
+  @override
+  Future<History?> findHistoryByIdx(int idx) async {
+    return _queryAdapter.query('SELECT * FROM History WHERE idx = ?1',
+        mapper: (Map<String, Object?> row) => History(
+            idx: row['idx'] as int?,
+            carIdx: row['carIdx'] as int,
+            partsIdx: row['partsIdx'] as int,
+            distance: row['distance'] as String,
+            date: row['date'] as String),
+        arguments: [idx]);
+  }
+
+  @override
+  Future<List<History>> findHistoryByCarIdx(int idx) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM History WHERE carIdx = ?1 ORDER BY idx DESC',
+        mapper: (Map<String, Object?> row) => History(
+            idx: row['idx'] as int?,
+            carIdx: row['carIdx'] as int,
+            partsIdx: row['partsIdx'] as int,
+            distance: row['distance'] as String,
+            date: row['date'] as String),
+        arguments: [idx]);
+  }
+
+  @override
+  Future<void> insertHistory(History history) async {
+    await _historyInsertionAdapter.insert(history, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateHistory(History history) async {
+    await _historyUpdateAdapter.update(history, OnConflictStrategy.abort);
+  }
 }

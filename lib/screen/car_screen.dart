@@ -132,7 +132,7 @@ class CarBox extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(car.name,style: TextStyle(fontWeight: FontWeight.bold,color: MyColor.mainColor,fontSize: 21),),
+                      Text(car.name,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 21),),
                       Text('${car.buyYear}년 ${car.buyMonth}월 출고',style: TextStyle(color: Colors.black87,fontSize: 13),)
                     ],
                   ),

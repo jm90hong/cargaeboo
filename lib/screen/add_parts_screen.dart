@@ -24,11 +24,13 @@ class AddPartsScreen extends StatefulWidget {
 
   bool isNew = true;
   int idx=0;
+  String name;
 
 
   AddPartsScreen({
     required this.isNew,
-    this.idx=0
+    this.idx=0,
+    this.name=''
   });
 
   @override
@@ -69,7 +71,10 @@ class _AddPartsScreenState extends State<AddPartsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('소모품 등록',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: widget.isNew ?
+          Text('소모품 등록',style: TextStyle(fontWeight: FontWeight.bold),) :
+          Text('${widget.name}',style: TextStyle(fontWeight: FontWeight.bold),)
+        ,
       ),
       body: FullContainer(
         child: Column(

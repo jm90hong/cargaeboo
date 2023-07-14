@@ -82,13 +82,13 @@ class PartsBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
     return GestureDetector(
       onTap: (){
         Navigator.push(
           context, MaterialPageRoute(builder: (context) => AddPartsScreen(
             isNew: false,
             idx: parts.idx ?? 0,
+            name: parts.name,
           )),
         );
       },
@@ -99,7 +99,6 @@ class PartsBox extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

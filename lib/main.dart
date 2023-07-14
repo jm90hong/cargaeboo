@@ -4,7 +4,7 @@ import 'package:cargaeboo/screen/root_screen.dart';
 import 'package:cargaeboo/util/my_floor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'model/parts_model.dart';
 
 void main() {
@@ -24,6 +24,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PartsModel()),
       ],
       child: MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('ko', 'KR'),
+        ],
         title: '카계부',
         theme: ThemeData(
           fontFamily: 'nt',

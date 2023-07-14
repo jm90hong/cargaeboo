@@ -1,10 +1,15 @@
 import 'dart:convert';
 
 import 'package:cargaeboo/config/my_widget.dart';
+import 'package:cargaeboo/entity/history.dart';
+import 'package:cargaeboo/screen/add_history_screen.dart';
+import 'package:cargaeboo/util/my_util.dart';
 import 'package:flutter/material.dart';
 
 import '../config/my_color.dart';
+import '../database.dart';
 import '../entity/car.dart';
+import '../entity/parts.dart';
 
 
 
@@ -22,13 +27,46 @@ class DetailCarScreen extends StatefulWidget {
 class _DetailCarScreenState extends State<DetailCarScreen> {
 
   TextStyle titleStyle = TextStyle(fontWeight: FontWeight.bold,fontSize: 16);
-    
+
+  List<Parts> allParts = [];
+  List<History> allHistory= [];
+
+  List<Widget> w = [];
+
+  makeHistory() async{
+    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    final partsDao = database.partsDao;
+    final historyDao = database.historyDao;
+
+
+    MyUtil.showToast(widget.car.idx.toString());
+    allParts = await partsDao.findAllParts();
+    allHistory = await historyDao.findHistoryByCarIdx(2);
+
+
+    for(var a in allHistory){
+      print(a.carIdx);
+    }
+
+    for(Parts parts in allParts){
+      w.add(Text(parts.name));
+      for(History history in allHistory.where((element) => element.partsIdx==parts.idx)){
+        w.add(Text('${history.date} / ${history.distance} km'));
+      }
+      w.add(Text('마지막'));
+    }
+
+    setState(() {});
+
+
+
+  }
   
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+    makeHistory();
   }
   
   @override
@@ -82,6 +120,10 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
                     //todo 엔진오일
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      children:w,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('엔진오일 교환 이력',style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),
                         Padding(
@@ -112,9 +154,9 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: MyColor.mainColor,
         onPressed: (){
-          //Navigator.push(
-           // context, MaterialPageRoute(builder: (context) => AddCarScreen()),
-         // );
+          Navigator.push(
+           context, MaterialPageRoute(builder: (context) => AddHistoryScreen(car: widget.car,)),
+         );
         },
         child: const Icon(Icons.edit,color: Colors.white,),
       ),
