@@ -49,11 +49,13 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
     }
 
     for(Parts parts in allParts){
+      String lastDistance='0';
       w.add(Text(parts.name));
       for(History history in allHistory.where((element) => element.partsIdx==parts.idx)){
         w.add(Text('${history.date} / ${history.distance} km'));
+        lastDistance=history.distance;
       }
-      w.add(Text('마지막'));
+      w.add(Text('다음 교환 :  ${int.parse(lastDistance)+int.parse(parts.durationDistance)} km'));
     }
 
     setState(() {});
