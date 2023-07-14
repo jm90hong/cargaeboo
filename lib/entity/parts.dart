@@ -7,8 +7,8 @@ class Parts{
   late final int? idx;
 
   final String name;
-  final int durationDistance;
-  final int durationPeriod;
+  final String durationDistance;
+  final String durationPeriod;
 
   Parts({
     this.idx,

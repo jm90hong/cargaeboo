@@ -91,7 +91,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Car` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `base64` TEXT NOT NULL, `name` TEXT NOT NULL, `buyYear` TEXT NOT NULL, `buyMonth` TEXT NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Parts` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `durationDistance` INTEGER NOT NULL, `durationPeriod` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Parts` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `durationDistance` TEXT NOT NULL, `durationPeriod` TEXT NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `History` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `carIdx` INTEGER NOT NULL, `partsIdx` INTEGER NOT NULL, `distance` INTEGER NOT NULL, `date` TEXT NOT NULL)');
 
@@ -180,11 +180,56 @@ class _$PartsDao extends PartsDao {
   _$PartsDao(
     this.database,
     this.changeListener,
-  );
+  )   : _queryAdapter = QueryAdapter(database),
+        _partsInsertionAdapter = InsertionAdapter(
+            database,
+            'Parts',
+            (Parts item) => <String, Object?>{
+                  'idx': item.idx,
+                  'name': item.name,
+                  'durationDistance': item.durationDistance,
+                  'durationPeriod': item.durationPeriod
+                });
 
   final sqflite.DatabaseExecutor database;
 
   final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<Parts> _partsInsertionAdapter;
+
+  @override
+  Future<List<Parts>> findAllParts() async {
+    return _queryAdapter.queryList('SELECT * FROM Parts ORDER BY idx DESC',
+        mapper: (Map<String, Object?> row) => Parts(
+            idx: row['idx'] as int?,
+            name: row['name'] as String,
+            durationDistance: row['durationDistance'] as String,
+            durationPeriod: row['durationPeriod'] as String));
+  }
+
+  @override
+  Future<void> deletePartsByIdx(int idx) async {
+    await _queryAdapter
+        .queryNoReturn('DELETE FROM Parts WHERE idx = ?1', arguments: [idx]);
+  }
+
+  @override
+  Future<Parts?> findPartsByIdx(int idx) async {
+    return _queryAdapter.query('SELECT * FROM Parts WHERE idx = ?1',
+        mapper: (Map<String, Object?> row) => Parts(
+            idx: row['idx'] as int?,
+            name: row['name'] as String,
+            durationDistance: row['durationDistance'] as String,
+            durationPeriod: row['durationPeriod'] as String),
+        arguments: [idx]);
+  }
+
+  @override
+  Future<void> insertParts(Parts parts) async {
+    await _partsInsertionAdapter.insert(parts, OnConflictStrategy.abort);
+  }
 }
 
 class _$HistoryDao extends HistoryDao {

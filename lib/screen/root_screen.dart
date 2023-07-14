@@ -26,15 +26,7 @@ class _RootScreenState extends State<RootScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor:Colors.white,
-        title: Row(
-          children: [
-            Image.asset('assets/img/logo.png',height: 40,fit: BoxFit.cover,)
-          ],
-        ),
-      ),
+
       body: FullContainer(
         child: screens[_selectedIndex]
       ),
@@ -52,7 +44,7 @@ class _RootScreenState extends State<RootScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: '소포품 관리',
+            label: '내 소포품',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.info_outline),

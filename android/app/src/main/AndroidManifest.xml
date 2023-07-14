@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hjm.cargaeboo.cargaeboo">
    <application
-        android:label="cargaeboo"
+        android:label="카계부"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

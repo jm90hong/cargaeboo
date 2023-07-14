@@ -15,6 +15,11 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          elevation: 0,
+          backgroundColor:Colors.white,
+          title: Text('앱정보',style: TextStyle(fontFamily: 'nt_bold',color: Colors.black),)
+      ),
       body: FullContainer(
 
         child: Column(
