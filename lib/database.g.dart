@@ -189,6 +189,16 @@ class _$PartsDao extends PartsDao {
                   'name': item.name,
                   'durationDistance': item.durationDistance,
                   'durationPeriod': item.durationPeriod
+                }),
+        _partsUpdateAdapter = UpdateAdapter(
+            database,
+            'Parts',
+            ['idx'],
+            (Parts item) => <String, Object?>{
+                  'idx': item.idx,
+                  'name': item.name,
+                  'durationDistance': item.durationDistance,
+                  'durationPeriod': item.durationPeriod
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -198,6 +208,8 @@ class _$PartsDao extends PartsDao {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<Parts> _partsInsertionAdapter;
+
+  final UpdateAdapter<Parts> _partsUpdateAdapter;
 
   @override
   Future<List<Parts>> findAllParts() async {
@@ -229,6 +241,11 @@ class _$PartsDao extends PartsDao {
   @override
   Future<void> insertParts(Parts parts) async {
     await _partsInsertionAdapter.insert(parts, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateParts(Parts parts) async {
+    await _partsUpdateAdapter.update(parts, OnConflictStrategy.abort);
   }
 }
 

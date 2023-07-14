@@ -65,7 +65,7 @@ class _PartsScreenState extends State<PartsScreen> {
         backgroundColor: MyColor.mainColor,
         onPressed: (){
           Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AddPartsScreen()),
+            context, MaterialPageRoute(builder: (context) => AddPartsScreen(isNew: true,)),
           );
         },
         child: const Icon(Icons.add,color: Colors.white,),
@@ -82,71 +82,82 @@ class PartsBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    print(parts.name);
-    return Container(
-      margin: EdgeInsets.only(top: 18),
-      width: double.infinity,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(parts.name,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AddPartsScreen(
+            isNew: false,
+            idx: parts.idx ?? 0,
+          )),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 18),
+        width: double.infinity,
+        color: Colors.white,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
 
-                parts.durationPeriod != '' ?
-                Text('교환 주기 : ${parts.durationDistance} km 혹은 ${parts.durationPeriod} 개월',style: TextStyle(color: Colors.black87),) :
-                Text('교환 주기 : ${parts.durationDistance} km',style: TextStyle(color: Colors.black87)),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(parts.name,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
+
+                  parts.durationPeriod != '' ?
+                  Text('교환 주기 : ${parts.durationDistance} km 혹은 ${parts.durationPeriod} 개월',style: TextStyle(color: Colors.black87),) :
+                  Text('교환 주기 : ${parts.durationDistance} km',style: TextStyle(color: Colors.black87)),
+                ],
+              ),
             ),
-          ),
-          IconButton(
-              onPressed: (){
-                showDialog<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('소모품 삭제'),
-                      content: Text(
-                          '${parts.name} 을 삭제 하시겠습니까?'
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            textStyle: Theme.of(context).textTheme.labelLarge,
-                          ),
-                          child: const Text('삭제하기'),
-                          onPressed: () async{
-
-                            final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-                            final partsDao = database.partsDao;
-
-                            partsDao.deletePartsByIdx(parts.idx ?? 0);
-                            Provider.of<PartsModel>(context,listen: false).getMyParts();
-                            MyUtil.showToast('${parts.name} 삭제 완료');
-                            Navigator.of(context).pop();
-                          },
+            IconButton(
+                onPressed: (){
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('소모품 삭제'),
+                        content: Text(
+                            '${parts.name} 을 삭제 하시겠습니까?'
                         ),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            textStyle: Theme.of(context).textTheme.labelLarge,
-                          ),
-                          child: const Text('취소'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              icon: Icon(Icons.remove_circle_outline,size: 24,color: Colors.grey.shade400,)
-          )
+                        actions: <Widget>[
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            child: const Text('삭제하기'),
+                            onPressed: () async{
 
-        ],
+                              final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+                              final partsDao = database.partsDao;
+
+                              partsDao.deletePartsByIdx(parts.idx ?? 0);
+                              Provider.of<PartsModel>(context,listen: false).getMyParts();
+                              MyUtil.showToast('${parts.name} 삭제 완료');
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            child: const Text('취소'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                icon: Icon(Icons.remove_circle_outline,size: 24,color: Colors.grey.shade400,)
+            )
+
+          ],
+        ),
       ),
     );
   }

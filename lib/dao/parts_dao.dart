@@ -18,8 +18,8 @@ abstract class PartsDao{
   @Query('SELECT * FROM Parts WHERE idx = :idx')
   Future<Parts?> findPartsByIdx(int idx);
 
-
-
+  @update
+  Future<void> updateParts(Parts parts);
 
   @insert
   Future<void> insertParts(Parts parts);

@@ -21,7 +21,15 @@ import '../model/car_model.dart';
 
 
 class AddPartsScreen extends StatefulWidget {
-  const AddPartsScreen({super.key});
+
+  bool isNew = true;
+  int idx=0;
+
+
+  AddPartsScreen({
+    required this.isNew,
+    this.idx=0
+  });
 
   @override
   State<AddPartsScreen> createState() => _AddPartsScreenState();
@@ -34,7 +42,27 @@ class _AddPartsScreenState extends State<AddPartsScreen> {
   TextEditingController nameCotroller = TextEditingController();
   TextEditingController dCotroller = TextEditingController();
   TextEditingController pCotroller = TextEditingController();
+  Parts? parts;
 
+
+  void init() async{
+    if(!widget.isNew){
+      final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+      final partsDao = database.partsDao;
+      parts = await partsDao.findPartsByIdx(widget.idx);
+      nameCotroller.text='${parts?.name}';
+      dCotroller.text='${parts?.durationDistance}';
+      pCotroller.text='${parts?.durationPeriod}';
+    }
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    init();
+  }
 
 
   @override
@@ -140,26 +168,44 @@ class _AddPartsScreenState extends State<AddPartsScreen> {
                     MyUtil.showToast('교환주기(km) 입력해주세요');
                     return;
                   }
-                  
-
-                  Parts parts = Parts(
-                      name: nameCotroller.text,
-                      durationDistance: dCotroller.text.toString(),
-                      durationPeriod: pCotroller.text.toString()
-                  );
-
-                  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-                  final partsDao = database.partsDao;
-                  partsDao.insertParts(parts);
 
 
-                  MyUtil.showToast('${nameCotroller.text} 추가 완료!');
+                  if(widget.isNew){
+                    Parts parts = Parts(
+                        name: nameCotroller.text,
+                        durationDistance: dCotroller.text.toString(),
+                        durationPeriod: pCotroller.text.toString()
+                    );
+
+                    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+                    final partsDao = database.partsDao;
+                    partsDao.insertParts(parts);
+
+
+                    MyUtil.showToast('${nameCotroller.text} 추가 완료!');
+
+                  }else{
+                    Parts parts = Parts(
+                        idx: widget.idx,
+                        name: nameCotroller.text,
+                        durationDistance: dCotroller.text.toString(),
+                        durationPeriod: pCotroller.text.toString()
+                    );
+
+                    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+                    final partsDao = database.partsDao;
+                    partsDao.updateParts(parts);
+
+                    MyUtil.showToast('${nameCotroller.text} 수정 완료!');
+                  }
+
                   Provider.of<PartsModel>(context,listen: false).getMyParts();
                   Navigator.pop(context);
+
                   
 
                 },
-                text: '소모품 등록하기',
+                text: widget.isNew ? '소모품 등록하기' : '수정하기',
                 backgroundColor:MyColor.mainColor
             )
           ],
