@@ -50,9 +50,14 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
 
     for(Parts parts in allParts){
       String lastDistance='0';
-      w.add(Text(parts.name));
+      w.add(Text(parts.name+' 교환 이력',style: const TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),));
       for(History history in allHistory.where((element) => element.partsIdx==parts.idx)){
-        w.add(Text('${history.date} / ${history.distance} km'));
+        w.add(
+            Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: Text('${history.date} / ${history.distance} km 에 교환완료')
+            )
+        );
         lastDistance=history.distance;
       }
       w.add(Text('다음 교환 :  ${int.parse(lastDistance)+int.parse(parts.durationDistance)} km'));
@@ -155,10 +160,11 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: MyColor.mainColor,
-        onPressed: (){
-          Navigator.push(
+        onPressed: () async{
+          await Navigator.push(
            context, MaterialPageRoute(builder: (context) => AddHistoryScreen(car: widget.car,)),
-         );
+          );
+          makeHistory();
         },
         child: const Icon(Icons.edit,color: Colors.white,),
       ),
