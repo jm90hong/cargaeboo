@@ -39,9 +39,8 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
     final historyDao = database.historyDao;
 
 
-    MyUtil.showToast(widget.car.idx.toString());
     allParts = await partsDao.findAllParts();
-    allHistory = await historyDao.findHistoryByCarIdx(2);
+    allHistory = await historyDao.findHistoryByCarIdx(widget.car.idx??0);
 
 
     for(var a in allHistory){
@@ -55,12 +54,14 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
         w.add(
             Padding(
                 padding: EdgeInsets.only(top: 2),
-                child: Text('${history.date} / ${history.distance} km 에 교환완료')
+                child: Text('${history.date} : ${history.distance} km 에 교환완료')
             )
         );
         lastDistance=history.distance;
       }
-      w.add(Text('다음 교환 :  ${int.parse(lastDistance)+int.parse(parts.durationDistance)} km'));
+      w.add(Text('다음 교환 :  ${int.parse(lastDistance)+int.parse(parts.durationDistance)} km',
+        style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),)
+      );
     }
 
     setState(() {});
@@ -123,32 +124,10 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
                 SizedBox(height: 15,),
                 Column(
                   children: [
-                    
-                    //todo 엔진오일
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children:w,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('엔진오일 교환 이력',style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),
-                        Padding(
-                            padding: EdgeInsets.only(top: 2),
-                            child: Text('2023년 7월 14일/ 12999km 때 교환')
-                        ),
-                        Padding(
-                            padding: EdgeInsets.only(top: 2),
-                            child: Text('2023년 7월 14일/ 12999km 때 교환')
-                        ),
-                        Padding(
-                            padding: EdgeInsets.only(top: 2),
-                            child: Text('2023년 7월 14일/ 12999km 때 교환')
-                        ),
-                        Text('다음 교환은 20999km 일 때',style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),)
-                      ],
-                    )
-                    
                   ],
                 )
                 

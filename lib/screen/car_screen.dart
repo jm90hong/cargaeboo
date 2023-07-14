@@ -37,7 +37,7 @@ class _CarScreenState extends State<CarScreen> {
         backgroundColor:Colors.white,
         title: Row(
           children: [
-            Image.asset('assets/img/logo.png',height: 40,fit: BoxFit.cover,)
+            Image.asset('assets/img/logo.png',height: 26,fit: BoxFit.cover,)
           ],
         ),
       ),

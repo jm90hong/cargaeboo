@@ -73,7 +73,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                             }
                           },
                           child: curBase64=='n' ?
-                          Image.asset('assets/img/logo.png',width: 70,) :
+                          Image.asset('assets/img/car.png',width: 70,height: 70,fit: BoxFit.cover,) :
                           imageFromBase64String(curBase64)
                       ),
                       const SizedBox(height: 30,),

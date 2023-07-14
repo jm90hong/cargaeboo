@@ -23,8 +23,10 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
       body: FullContainer(
 
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
+            Text('제작자'),
+            Text('홍정민')
           ],
         ),
       ),
