@@ -20,6 +20,6 @@ part 'database.g.dart';
 @Database(version: 1, entities: [Car, Parts, History])
 abstract class AppDatabase extends FloorDatabase {
   CarDao get carDao;
-  PartsDao get partDao;
+  PartsDao get partsDao;
   HistoryDao get historyDao;
 }

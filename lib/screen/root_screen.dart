@@ -39,9 +39,9 @@ class _RootScreenState extends State<RootScreen> {
         child: screens[_selectedIndex]
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: MyColor.mainColor,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Color(0xffEAEAEA),
+        backgroundColor: Color(0xffffffff),
+        selectedItemColor: Colors.black87,
+        unselectedItemColor: Colors.grey.shade400,
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         iconSize: 23,
         type: BottomNavigationBarType.fixed,

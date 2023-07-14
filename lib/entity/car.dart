@@ -9,8 +9,8 @@ class Car{
 
   final String base64;
   final String name;
-  final int buyYear;
-  final int buyMonth;
+  final String buyYear;
+  final String buyMonth;
 
   Car({
     this.idx,

@@ -63,7 +63,7 @@ class _$AppDatabase extends AppDatabase {
 
   CarDao? _carDaoInstance;
 
-  PartsDao? _partDaoInstance;
+  PartsDao? _partsDaoInstance;
 
   HistoryDao? _historyDaoInstance;
 
@@ -89,7 +89,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Car` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `base64` TEXT NOT NULL, `name` TEXT NOT NULL, `buyYear` INTEGER NOT NULL, `buyMonth` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Car` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `base64` TEXT NOT NULL, `name` TEXT NOT NULL, `buyYear` TEXT NOT NULL, `buyMonth` TEXT NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Parts` (`idx` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `durationDistance` INTEGER NOT NULL, `durationPeriod` INTEGER NOT NULL)');
         await database.execute(
@@ -107,8 +107,8 @@ class _$AppDatabase extends AppDatabase {
   }
 
   @override
-  PartsDao get partDao {
-    return _partDaoInstance ??= _$PartsDao(database, changeListener);
+  PartsDao get partsDao {
+    return _partsDaoInstance ??= _$PartsDao(database, changeListener);
   }
 
   @override
@@ -143,19 +143,31 @@ class _$CarDao extends CarDao {
 
   @override
   Future<List<Car>> findAllCars() async {
-    return _queryAdapter.queryList('SELECT * FROM Car',
+    return _queryAdapter.queryList('SELECT * FROM Car ORDER BY idx DESC',
         mapper: (Map<String, Object?> row) => Car(
             idx: row['idx'] as int?,
             base64: row['base64'] as String,
             name: row['name'] as String,
-            buyMonth: row['buyMonth'] as int,
-            buyYear: row['buyYear'] as int));
+            buyMonth: row['buyMonth'] as String,
+            buyYear: row['buyYear'] as String));
   }
 
   @override
-  Future<void> deleteCarById(int idx) async {
+  Future<void> deleteCarByIdx(int idx) async {
     await _queryAdapter
         .queryNoReturn('DELETE FROM Car WHERE idx = ?1', arguments: [idx]);
+  }
+
+  @override
+  Future<Car?> findCarByIdx(int idx) async {
+    return _queryAdapter.query('SELECT * FROM Car WHERE idx = ?1',
+        mapper: (Map<String, Object?> row) => Car(
+            idx: row['idx'] as int?,
+            base64: row['base64'] as String,
+            name: row['name'] as String,
+            buyMonth: row['buyMonth'] as String,
+            buyYear: row['buyYear'] as String),
+        arguments: [idx]);
   }
 
   @override

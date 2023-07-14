@@ -9,7 +9,6 @@ import 'model/parts_model.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  MyFloor.init();
   runApp(const MyApp());
 }
 

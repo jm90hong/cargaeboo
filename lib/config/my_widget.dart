@@ -8,14 +8,17 @@ class FullContainer extends StatelessWidget {
 
   Color backgroundColor;
   Widget child;
+  EdgeInsetsGeometry padding;
   FullContainer({
     this.backgroundColor=Colors.white,
-    required this.child
+    required this.child,
+    this.padding=EdgeInsets.zero
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: padding,
       width: double.infinity,
       height: double.infinity,
       color: backgroundColor,
