@@ -34,6 +34,7 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
   List<Widget> w = [];
 
   makeHistory() async{
+    w=[];
     final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
     final partsDao = database.partsDao;
     final historyDao = database.historyDao;
@@ -49,7 +50,10 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
 
     for(Parts parts in allParts){
       String lastDistance='0';
-      w.add(Text(parts.name+' 교환 이력',style: const TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),));
+      w.add(Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: Text(parts.name+' 교환 이력',style: const TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),
+      ));
       for(History history in allHistory.where((element) => element.partsIdx==parts.idx)){
         w.add(
             Padding(
@@ -59,7 +63,7 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
         );
         lastDistance=history.distance;
       }
-      w.add(Text('다음 교환 :  ${int.parse(lastDistance)+int.parse(parts.durationDistance)} km',
+      w.add(Text('다음 교환시기:  ${int.parse(lastDistance)+int.parse(parts.durationDistance)} km',
         style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),)
       );
     }
@@ -81,7 +85,7 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.car.name}',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(widget.car.name,style: TextStyle(fontWeight: FontWeight.bold),),
       ),
       body: FullContainer(
         padding: EdgeInsets.symmetric(horizontal: 16),
@@ -97,7 +101,7 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
                       borderRadius: BorderRadius.circular(10),
                       child:widget.car.base64=='n' ?
                       Image.asset(
-                        'assets/img/logo.png',
+                        'assets/img/car.png',
                         height:100,
                         width: 100,
                         fit: BoxFit.cover,
@@ -121,7 +125,6 @@ class _DetailCarScreenState extends State<DetailCarScreen> {
                 ),
                 SizedBox(height: 20,),
                 Text('교환이력',style: titleStyle,),
-                SizedBox(height: 15,),
                 Column(
                   children: [
                     Column(
