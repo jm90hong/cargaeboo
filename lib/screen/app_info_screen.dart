@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../config/my_color.dart';
 import '../config/my_widget.dart';
@@ -15,6 +16,25 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
 
   TextStyle style1 = TextStyle(color: Color(0xff999999),fontSize: 12,fontWeight: FontWeight.bold);
   TextStyle style2 = TextStyle(color: Color(0xff222222),fontSize: 14,fontWeight: FontWeight.bold);
+
+  String version='';
+
+
+  void init() async{
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    version = packageInfo.version;
+    String code = packageInfo.buildNumber;
+    setState(() {
+
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   init();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +53,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
             Text('JM.DEVELOPER',style: style2,),
             const SizedBox(height: 10,),
             Text('앱버전',style: style1,),
-            Text('1.1.1',style: style2,),
+            Text(version,style: style2,),
             const SizedBox(height: 10,),
             Text('문의',style: style1,),
             Text('hong.jm.developer@gmail.com',style: style2,),
