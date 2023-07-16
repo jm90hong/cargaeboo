@@ -20,6 +20,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
   String version='';
 
 
+
   void init() async{
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     version = packageInfo.version;
