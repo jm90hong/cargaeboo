@@ -57,15 +57,15 @@ class _CarScreenState extends State<CarScreen> {
               ),
             ),
             const SizedBox(height: 20,),
-            SingleChildScrollView(
-              child: Consumer<CarModel>(builder: (context, carModel, child){
-                return Expanded(
+            Consumer<CarModel>(builder: (context, carModel, child){
+              return Expanded(
+                child: SingleChildScrollView(
                   child: Column(
                     children: carModel.myCars.map((e) => CarBox(car: e)).toList(),
                   ),
-                );
-              },)
-            ),
+                ),
+              );
+            },),
           ],
         ),
       ),
