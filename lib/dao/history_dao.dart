@@ -16,7 +16,7 @@ abstract class HistoryDao{
   @Query('SELECT * FROM History WHERE idx = :idx')
   Future<History?> findHistoryByIdx(int idx);
 
-  @Query('SELECT * FROM History WHERE carIdx = :idx ORDER BY idx DESC' )
+  @Query('SELECT * FROM History WHERE carIdx = :idx ORDER BY idx ASC' )
   Future<List<History>> findHistoryByCarIdx(int idx);
 
   @update
